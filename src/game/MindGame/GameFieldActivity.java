@@ -1,0 +1,155 @@
+package game.MindGame;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Created by DVitinnik on 20-Oct-15.
+ */
+public class GameFieldActivity extends Activity implements View.OnTouchListener {
+    private int[] levelViewList;
+    private int levelIndex;
+    private TimerAsync timerAsync;
+    private Settings settings;
+    private Level currentLevel = null;
+    private StatusBar statusBar = new StatusBar();
+
+    private ImageView imageView;
+    private ImageView additionalImage;
+
+    TextView timeTextView;
+    TextView levelTextView;
+    TextView scoreTextView;
+
+    boolean gameOver;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getActionBar().hide();
+        // чтобы приложение постоянно имело портретную ориентацию
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        //чтобы приложение было полноэкранным
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        setContentView(R.layout.gamefield);
+
+        Button startGameButton = (Button) findViewById(R.id.startButton);
+        startGameButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                goToNextLevel();
+                startGameButton.setVisibility(View.GONE);
+                timerAsync = new TimerAsync();
+                timerAsync.execute(currentLevel.getTime());
+                timeTextView.setWidth(imageView.getWidth() / 3);
+                levelTextView.setWidth(imageView.getWidth() / 3);
+                scoreTextView.setWidth(imageView.getWidth() / 3);
+                updateStatusBar();
+            }
+        });
+        settings = getIntent().getParcelableExtra("settings");
+
+        levelViewList = settings.getLevelNumbers();
+        levelIndex = -1;
+
+        imageView = (ImageView) findViewById(R.id.image);
+        imageView.setOnTouchListener(this);
+
+        additionalImage = (ImageView) findViewById(R.id.additionalImage);
+
+        timeTextView = (TextView) findViewById(R.id.timeTextView);
+        levelTextView = (TextView) findViewById(R.id.levelTextView);
+        scoreTextView = (TextView) findViewById(R.id.scoreTextView);
+    }
+
+    private void updateStatusBar() {
+        timeTextView.setText("Время: " + String.valueOf(statusBar.getTime()));
+        levelTextView.setText("Уровень: " + String.valueOf(statusBar.getLevel()));
+        scoreTextView.setText("Счет: " + String.valueOf(statusBar.getScore()));
+    }
+
+    private boolean goToNextLevel() {
+        if (levelIndex < levelViewList.length - 1) {
+            levelIndex++;
+            currentLevel = settings.getLevel(levelViewList[levelIndex], imageView);
+            imageView.setImageBitmap(currentLevel.Next());
+
+            if (currentLevel.isHaveAddittionalBitmap())
+                additionalImage.setVisibility(View.VISIBLE);
+            else
+                additionalImage.setVisibility(View.GONE);
+
+            statusBar.setLevel(levelIndex + 1);
+            statusBar.setTime(currentLevel.getTime());
+            updateStatusBar();
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        float x = motionEvent.getX();
+        float y = motionEvent.getY();
+        if (currentLevel != null && currentLevel.TryClick(x, y)) {
+            imageView.setImageBitmap(currentLevel.Next());
+            statusBar.setScore(statusBar.getScore() + currentLevel.getMark());
+        } else
+            statusBar.setScore(statusBar.getScore() - 10);
+        updateStatusBar();
+        return true;
+    }
+
+
+    class TimerAsync extends AsyncTask<Integer, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Integer... values) {
+            while (values[0] > 0) {
+                if (!isCancelled()) {
+                    statusBar.setTime(--values[0]);
+                    publishProgress();
+                    try {
+                        TimeUnit.SECONDS.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+            updateStatusBar();
+        }
+    }
+}

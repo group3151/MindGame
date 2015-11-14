@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MINDGAME</string>
+    <string name="playMenu">Играть</string>
+    <string name="statisticsMenu">Статистика</string>
+    <string name="settingsMenu">Настройки</string>
+    <string name="aboutMenu">О программе</string>
+</resources>
