@@ -63,11 +63,11 @@ public class Settings implements Parcelable {
 
     }
 
-    public int getLevelDifficulty() {
+    public int getDifficultyLevel() {
         return levelDifficulty;
     }
 
-    public void setLevelDifficulty(int levelDifficulty) {
+    public void setDifficultyLevel(int levelDifficulty) {
         this.levelDifficulty = levelDifficulty;
     }
 

@@ -12,11 +12,14 @@ public class StatusBar implements Parcelable {
     private int score = 0;
     private int level = 1;
     private int time = 1000;
+    private int count=0;
 
-    private int heigth = 50;
+    public void setCount(int count) {
+        this.count = count;
+    }
 
-    public int getHeigth() {
-        return heigth;
+    public int getCount() {
+        return count;
     }
 
     public StatusBar() {
