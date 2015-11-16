@@ -7,7 +7,7 @@ import android.widget.ImageView;
  * Created by DVitinnik on 04-Nov-15.
  */
 public abstract class Level {
-    protected boolean haveAddittionalBitmap;//Показувает, есть ли дополнительное изображение
+    protected boolean haveAddittionalBitmap;//Показывает, есть ли дополнительное изображение
     protected int time;//Время для выбора правильного варианта ответа в МИЛЛИСЕКУНДАХ
     protected int mark;//Оценка за правильный ответ
     protected int count;//Количество вопросов
