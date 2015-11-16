@@ -7,15 +7,15 @@ import android.widget.ImageView;
  * Created by DVitinnik on 04-Nov-15.
  */
 public abstract class Level {
-    protected boolean haveAddittionalBitmap;//Показувает, есть ли дополнительное изображение
-    protected int time;//Время для выбора правильного варианта ответа в МИЛЛИСЕКУНДАХ
-    protected int mark;//Оценка за правильный ответ
-    protected int count;//Количество вопросов
-    protected int x0, y0, x1, y1;//Координаты прямоугольника, в пределах которого надо нажать
-    protected ImageView imageView;//Основное изображение
+    protected boolean haveAddittionalBitmap;//РџРѕРєР°Р·С‹РІР°РµС‚, РµСЃС‚СЊ Р»Рё РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕРµ РёР·РѕР±СЂР°Р¶РµРЅРёРµ
+    protected int time;//Р’СЂРµРјСЏ РґР»СЏ РІС‹Р±РѕСЂР° РїСЂР°РІРёР»СЊРЅРѕРіРѕ РІР°СЂРёР°РЅС‚Р° РѕС‚РІРµС‚Р° РІ РњРР›Р›РРЎР•РљРЈРќР”РђРҐ
+    protected int mark;//РћС†РµРЅРєР° Р·Р° РїСЂР°РІРёР»СЊРЅС‹Р№ РѕС‚РІРµС‚
+    protected int count;//РљРѕР»РёС‡РµСЃС‚РІРѕ РІРѕРїСЂРѕСЃРѕРІ
+    protected int x0, y0, x1, y1;//РљРѕРѕСЂРґРёРЅР°С‚С‹ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРєР°, РІ РїСЂРµРґРµР»Р°С… РєРѕС‚РѕСЂРѕРіРѕ РЅР°РґРѕ РЅР°Р¶Р°С‚СЊ
+    protected ImageView imageView;//РћСЃРЅРѕРІРЅРѕРµ РёР·РѕР±СЂР°Р¶РµРЅРёРµ
 
-    protected ImageView additionalImage;//Дополнительное изображение (пример/последовательность фигур)
-    protected int additionalTime; //Время показа дополнительного изображения в МИЛЛИСЕКУНДАХ
+    protected ImageView additionalImage;//Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕРµ РёР·РѕР±СЂР°Р¶РµРЅРёРµ (РїСЂРёРјРµСЂ/РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ С„РёРіСѓСЂ)
+    protected int additionalTime; //Р’СЂРµРјСЏ РїРѕРєР°Р·Р° РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕРіРѕ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РІ РњРР›Р›РРЎР•РљРЈРќР”РђРҐ
 
     public int getCount() {
         return count;
