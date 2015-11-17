@@ -8,17 +8,23 @@ import android.widget.ImageView;
  */
 public class MathLevel extends Level {
 
+    @Override
+    public Bitmap getMainImage() {
+        return null;
+    }
+
+    @Override
+    public Bitmap getAdditionalImage() {
+        return null;
+    }
+
     public MathLevel(ImageView imageView) {
         super(imageView);
     }
 
     @Override
-    public Bitmap Next() {
-        return null;
+    public boolean TryClick(float x, float y) {
+        return false;
     }
 
-    @Override
-    public Bitmap getAdditionalBitmap() {
-        return null;
-    }
 }
