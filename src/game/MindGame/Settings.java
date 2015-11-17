@@ -94,14 +94,14 @@ public class Settings implements Parcelable {
         return new int[]{1};
     }
 
-    public Level getLevel(int number, ImageView imageView) {
+    public Level getLevel(int number, ImageView imageView, ImageView additionalImage) {
         switch (number) {
             case 1:
-                return new DotLevel(imageView);
+                return new ColorLevel(imageView, additionalImage);
             case 2:
-                return new DotLevel(imageView);
+                return new DotLevel(imageView, additionalImage);
             case 3:
-                return new DotLevel(imageView);
+                return new DotLevel(imageView, additionalImage);
             default:
                 return null;
         }

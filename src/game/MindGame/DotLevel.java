@@ -14,8 +14,8 @@ import java.util.Random;
 public class DotLevel extends Level {
     private int radius;
 
-    public DotLevel(ImageView imageView) {
-        super(imageView);
+    public DotLevel(ImageView imageView, ImageView additionalImage) {
+        super(imageView, additionalImage);
         radius = 50;
         mark = 50;
         time = 2000;

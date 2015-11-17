@@ -95,7 +95,7 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
         if (levelIndex < levelIndexList.length - 1) {
             levelIndex++;
 
-            currentLevel = settings.getLevel(levelIndexList[levelIndex], imageView);
+            currentLevel = settings.getLevel(levelIndexList[levelIndex], imageView, additionalImage);
             imageView.setImageBitmap(currentLevel.getMainImage());
 
             if (currentLevel.isHaveAddittionalImage())
@@ -110,6 +110,7 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
             return true;
         } else {
             timerAsync.cancel(true);
+            gameOver = true;
             printText("YOU WIN");
         }
         return false;
@@ -118,8 +119,7 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        if (gameOver)
-        {
+        if (gameOver) {
             timerAsync.cancel(true);
             return false;
         }
@@ -143,6 +143,7 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
                         }
                     }
                 }
+                additionalImage.setImageBitmap(null);
             }
             imageView.setImageBitmap(currentLevel.getMainImage());
 
