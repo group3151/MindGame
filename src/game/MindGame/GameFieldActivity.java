@@ -160,6 +160,18 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        timerAsync.cancel(true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        timerAsync.cancel(true);
+    }
+
     private void printText(String text) {
         Bitmap bitmap = Bitmap.createBitmap(imageView.getWidth(), imageView.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -178,8 +190,8 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
 
     @Override
     protected void onStop() {
-        // timerAsync.cancel(false);
-        // additionalTimer.cancel(false);
+        super.onStop();
+        timerAsync.cancel(true);
     }
 
     class TimerAsync extends AsyncTask<Integer, Void, Void> {
