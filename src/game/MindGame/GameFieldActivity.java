@@ -27,10 +27,9 @@ import java.util.concurrent.TimeUnit;
  * Created by DVitinnik on 20-Oct-15.
  */
 public class GameFieldActivity extends Activity implements View.OnTouchListener {
-    private int[] levelViewList;
+    private int[] levelIndexList;
     private int levelIndex;
     private TimerAsync timerAsync;
-    private AdditionalTimerAsync additionalTimer;
     private Settings settings;
     private Level currentLevel = null;
     private StatusBar statusBar = new StatusBar();
@@ -73,7 +72,7 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
         });
         settings = getIntent().getParcelableExtra("settings");
 
-        levelViewList = settings.getLevelNumbers();
+        levelIndexList = settings.getLevelNumbers();
         levelIndex = -1;
 
         imageView = (ImageView) findViewById(R.id.image);
@@ -87,29 +86,30 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
     }
 
     private void updateStatusBar() {
-
         timeTextView.setText("Время: " + String.valueOf(statusBar.getTime()));
         levelTextView.setText("Количество: " + String.valueOf(statusBar.getCount()));
         scoreTextView.setText("Счет: " + String.valueOf(statusBar.getScore()));
     }
 
     private boolean goToNextLevel() {
-        if (levelIndex < levelViewList.length - 1) {
+        if (levelIndex < levelIndexList.length - 1) {
             levelIndex++;
-            currentLevel = settings.getLevel(levelViewList[levelIndex], imageView);
-            imageView.setImageBitmap(currentLevel.Next());
 
-            if (currentLevel.isHaveAddittionalBitmap())
+            currentLevel = settings.getLevel(levelIndexList[levelIndex], imageView);
+            imageView.setImageBitmap(currentLevel.getMainImage());
+
+            if (currentLevel.isHaveAddittionalImage())
                 additionalImage.setVisibility(View.VISIBLE);
             else
                 additionalImage.setVisibility(View.GONE);
 
             statusBar.setLevel(levelIndex + 1);
             statusBar.setTime(currentLevel.getTime());
-            statusBar.setCount(currentLevel.getCount());
+            statusBar.setCount(currentLevel.getQuestionsCount());
             updateStatusBar();
             return true;
         } else {
+            timerAsync.cancel(true);
             printText("YOU WIN");
         }
         return false;
@@ -118,22 +118,35 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        if (gameOver) return false;
+        if (gameOver)
+        {
+            timerAsync.cancel(true);
+            return false;
+        }
+
         float x = motionEvent.getX();
         float y = motionEvent.getY();
+
         if (currentLevel != null && currentLevel.TryClick(x, y)) {
             statusBar.setCount(statusBar.getCount() - 1);
+            statusBar.setScore(statusBar.getScore() + currentLevel.getMark());
+            statusBar.setTime(currentLevel.getTime());
 
-            if (currentLevel.isHaveAddittionalBitmap()) {
-                additionalImage.setImageBitmap(currentLevel.getAdditionalBitmap());
-                if (currentLevel.getAdditionalTime() > 0) {
-                    //  additionalTimer = new AdditionalTimerAsync();
-                    // additionalTimer.execute(currentLevel.getAdditionalTime());
+            if (currentLevel.isHaveAddittionalImage()) {
+                for (int i = 0; i < currentLevel.getAdditionalImageCount(); i++) {
+                    additionalImage.setImageBitmap(currentLevel.getAdditionalImage());
+                    if (currentLevel.getAdditionalTime() > 0) {
+                        try {
+                            Thread.sleep(currentLevel.getAdditionalTime());
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
-            imageView.setImageBitmap(currentLevel.Next());
-            statusBar.setScore(statusBar.getScore() + currentLevel.getMark());
-            timerAsync.cancel(false);
+            imageView.setImageBitmap(currentLevel.getMainImage());
+
+            timerAsync.cancel(true);
             timerAsync = new TimerAsync();
             timerAsync.execute(currentLevel.getTime());
         } else
@@ -177,15 +190,13 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
 
         @Override
         protected Void doInBackground(Integer... values) {
-            while (values[0] > 0) {
-                if (!isCancelled()) {
-                    statusBar.setTime(--values[0]);
-                    publishProgress();
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(1);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+            while (values[0] > 0 && !isCancelled()) {
+                statusBar.setTime(--values[0]);
+                publishProgress();
+                try {
+                    TimeUnit.MILLISECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
             return null;
@@ -202,28 +213,6 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
             super.onPostExecute(aVoid);
             gameOver = true;
             printText("GAME OVER");
-        }
-    }
-
-    class AdditionalTimerAsync extends AsyncTask<Integer, Void, Void> {
-        @Override
-        protected Void doInBackground(Integer... values) {
-            while (values[0] > 0) {
-                if (!isCancelled()) {
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(1);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            additionalImage.setVisibility(View.GONE);
         }
     }
 }
