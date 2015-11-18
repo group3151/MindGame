@@ -105,7 +105,6 @@ public class Settings implements Parcelable {
             default:
                 return null;
         }
-
     }
 
     @Override
