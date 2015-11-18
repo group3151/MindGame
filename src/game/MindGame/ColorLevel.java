@@ -58,12 +58,10 @@ public class ColorLevel extends Level {
         Bitmap bitmap = Bitmap.createBitmap(mainImage.getWidth(), mainImage.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
-
         //x0=additionalImage.getWidth()/2;
         //y0=additionalImage.getHeight()/2;
         //paint.setColor(Color.rgb(199, 191, 230));
         //canvas.drawCircle(x0, y0, radius+10, paint);
-
 
         x0 = mainImage.getWidth() / 2;
         y0 = mainImage.getHeight() / 2;
