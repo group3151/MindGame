@@ -66,11 +66,11 @@ public class ColorLevel extends Level{
         canvas.drawCircle(x0, y0, radius, paint);
 
 
-        //x1 = x0 + radius;
-        //y1 = y0 + radius;
+        x1 = x0 + radius;
+        y1 = y0 + radius;
 
-        //x0 -= radius;
-        //y0 -= radius;
+        x0 -= radius;
+        y0 -= radius;
 
 
         return bitmap;
