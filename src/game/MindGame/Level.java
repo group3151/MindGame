@@ -56,9 +56,8 @@ public abstract class Level {
     }
 
 
-    public Level(ImageView mainImage, ImageView additionalImage) {
+    public Level(ImageView mainImage) {
         this.mainImage = mainImage;
-        this.additionalImage=additionalImage;
         haveAddittionalImage = false;
     }
 
