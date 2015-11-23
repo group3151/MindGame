@@ -35,7 +35,6 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
     private StatusBar statusBar = new StatusBar();
 
     private ImageView imageView;
-    private ImageView additionalImage;
 
     TextView timeTextView;
     TextView levelTextView;
@@ -78,8 +77,6 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
         imageView = (ImageView) findViewById(R.id.image);
         imageView.setOnTouchListener(this);
 
-        additionalImage = (ImageView) findViewById(R.id.additionalImage);
-
         timeTextView = (TextView) findViewById(R.id.timeTextView);
         levelTextView = (TextView) findViewById(R.id.levelTextView);
         scoreTextView = (TextView) findViewById(R.id.scoreTextView);
@@ -95,13 +92,8 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
         if (levelIndex < levelIndexList.length - 1) {
             levelIndex++;
 
-            currentLevel = settings.getLevel(levelIndexList[levelIndex], imageView, additionalImage);
+            currentLevel = settings.getLevel(levelIndexList[levelIndex], imageView);
             imageView.setImageBitmap(currentLevel.getMainImage());
-
-            if (currentLevel.isHaveAddittionalImage())
-                additionalImage.setVisibility(View.VISIBLE);
-            else
-                additionalImage.setVisibility(View.GONE);
 
             statusBar.setLevel(levelIndex + 1);
             statusBar.setTime(currentLevel.getTime());
@@ -134,7 +126,7 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
 
             if (currentLevel.isHaveAddittionalImage()) {
                 for (int i = 0; i < currentLevel.getAdditionalImageCount(); i++) {
-                    additionalImage.setImageBitmap(currentLevel.getAdditionalImage());
+                    imageView.setImageBitmap(currentLevel.getAdditionalImage());
                     if (currentLevel.getAdditionalTime() > 0) {
                         try {
                             Thread.sleep(currentLevel.getAdditionalTime());
@@ -143,7 +135,6 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
                         }
                     }
                 }
-                additionalImage.setImageBitmap(null);
             }
             imageView.setImageBitmap(currentLevel.getMainImage());
 
