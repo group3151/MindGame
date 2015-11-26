@@ -18,9 +18,9 @@ public class MathLevel extends Level {
         return null;
     }
 
-    public MathLevel(ImageView imageView, ImageView additionalImage)
+    public MathLevel(ImageView imageView)
     {
-        super(imageView, additionalImage);
+        super(imageView);
     }
 
     @Override
