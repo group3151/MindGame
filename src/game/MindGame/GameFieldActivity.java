@@ -30,6 +30,7 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
     private int[] levelIndexList;
     private int levelIndex;
     private TimerAsync timerAsync;
+    private AdditionalTimerAsync additionalTimerAsync;
     private Settings settings;
     private Level currentLevel = null;
     private StatusBar statusBar = new StatusBar();
@@ -125,16 +126,10 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
             statusBar.setTime(currentLevel.getTime());
 
             if (currentLevel.isHaveAddittionalImage()) {
-                for (int i = 0; i < currentLevel.getAdditionalImageCount(); i++) {
-                    imageView.setImageBitmap(currentLevel.getAdditionalImage());
-                    if (currentLevel.getAdditionalTime() > 0) {
-                        try {
-                            Thread.sleep(currentLevel.getAdditionalTime());
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
+                // for (int i = 0; i < currentLevel.getAdditionalImageCount(); i++) {
+                additionalTimerAsync = new AdditionalTimerAsync();
+                additionalTimerAsync.execute(currentLevel.getAdditionalTime(), currentLevel.getAdditionalImageCount());
+                // }
             }
             imageView.setImageBitmap(currentLevel.getMainImage());
 
@@ -156,12 +151,14 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
     protected void onDestroy() {
         super.onDestroy();
         timerAsync.cancel(true);
+        additionalTimerAsync.cancel(true);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         timerAsync.cancel(true);
+        additionalTimerAsync.cancel(true);
     }
 
     private void printText(String text) {
@@ -184,7 +181,9 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
     protected void onStop() {
         super.onStop();
         timerAsync.cancel(true);
+        additionalTimerAsync.cancel(true);
     }
+
 
     class TimerAsync extends AsyncTask<Integer, Void, Void> {
         @Override
@@ -217,6 +216,38 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
             super.onPostExecute(aVoid);
             gameOver = true;
             printText("GAME OVER");
+        }
+    }
+
+
+    class AdditionalTimerAsync extends AsyncTask<Integer, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Integer... values) {
+            for (int i = 0; i < values[1] && !isCancelled(); i++) {
+                publishProgress();
+                try {
+                    TimeUnit.MILLISECONDS.sleep(values[0]);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+            imageView.setImageBitmap(currentLevel.getAdditionalImage());
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
         }
     }
 }
