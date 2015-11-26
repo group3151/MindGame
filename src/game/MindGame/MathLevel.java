@@ -21,17 +21,11 @@ public class MathLevel extends Level {
     public MathLevel(ImageView imageView, ImageView additionalImage)
     {
         super(imageView, additionalImage);
-        time = 3000;
-        mark = 100;
-        questionsCount = 10;
-        haveAddittionalImage = false;
-
     }
 
     @Override
     public boolean TryClick(float x, float y) {
-
-            return x >= x0 && x <= x1 && y >= y0 && y <= y1;
+        return false;
     }
 
 }
