@@ -88,10 +88,10 @@ public class Settings implements Parcelable {
     }
 
     public int[] getLevelNumbers() {
-        //1 - DotLevel
-        //2 - MathLevel
-        //3 - FigureLevel
-        return new int[]{1};
+        //2 - DotLevel
+        //3 - MathLevel
+        //1 - FigureLevel
+        return new int[]{3};
     }
 
     public Level getLevel(int number, ImageView imageView) {
