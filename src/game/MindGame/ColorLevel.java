@@ -26,7 +26,7 @@ public class ColorLevel extends Level {
         time = 3000;
         questionsCount = 10;
         haveAddittionalImage = true;
-        additionalImageCount = 2;
+        additionalImageCount = 1;
         additionalTime = 500;
 
         rand = new Random(System.currentTimeMillis());
@@ -74,11 +74,10 @@ public class ColorLevel extends Level {
     public Bitmap getAdditionalImage() {
         Bitmap bitmap = Bitmap.createBitmap(mainImage.getWidth(), mainImage.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
-
         x0 = mainImage.getWidth() / 2;
         y0 = mainImage.getHeight() / 2;
         paint.setColor(Color.BLUE);
-        canvas.drawCircle(x0, y0, radius + 30, paint);
+        canvas.drawCircle(x0, y0, radius, paint);
 
         return bitmap;
     }
