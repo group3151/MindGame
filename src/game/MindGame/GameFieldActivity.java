@@ -142,16 +142,6 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
             statusBar.setScore(statusBar.getScore() + currentLevel.getMark());
             statusBar.setTime(currentLevel.getTime());
 
-            if (currentLevel.isHaveAddittionalImage()) {
-                for (int i = 0; i < currentLevel.getAdditionalImageCount(); i++) {
-                    imageView.setImageBitmap(currentLevel.getAdditionalImage());
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(currentLevel.getAdditionalTime());
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
             imageView.setImageBitmap(currentLevel.getMainImage());
 
             if (timerAsync != null)
