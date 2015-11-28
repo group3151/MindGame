@@ -6,12 +6,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.widget.ImageView;
+
 import java.util.Random;
 
 /**
  * Created by kirill on 17.11.2015.
  */
-public class ColorLevel extends Level{
+public class ColorLevel extends Level {
     private int radius;
     private int[] color;
     private Random rand;
@@ -25,18 +26,18 @@ public class ColorLevel extends Level{
         time = 3000;
         questionsCount = 10;
         haveAddittionalImage = true;
-        additionalImageCount = 2;
-        additionalTime = 3000;
+        additionalImageCount = 1;
+        additionalTime = 500;
 
         rand = new Random(System.currentTimeMillis());
-        color = new int [6];
+        color = new int[6];
         color[0] = Color.rgb(rand.nextInt() % 255, rand.nextInt() % 255, rand.nextInt() % 255);
-        color[1] = Color.rgb(rand.nextInt()%255,rand.nextInt()%255,rand.nextInt()%255);
-        color[2] = Color.rgb(rand.nextInt()%255,rand.nextInt()%255,rand.nextInt()%255);
-        color[3] = Color.rgb(rand.nextInt()%255,rand.nextInt()%255,rand.nextInt()%255);
-        color[4] = Color.rgb(rand.nextInt()%255,rand.nextInt()%255,rand.nextInt()%255);
-        color[5] = Color.rgb(rand.nextInt()%255,rand.nextInt()%255,rand.nextInt()%255);
-        sampleCircle = Math.abs(rand.nextInt()%5);
+        color[1] = Color.rgb(rand.nextInt() % 255, rand.nextInt() % 255, rand.nextInt() % 255);
+        color[2] = Color.rgb(rand.nextInt() % 255, rand.nextInt() % 255, rand.nextInt() % 255);
+        color[3] = Color.rgb(rand.nextInt() % 255, rand.nextInt() % 255, rand.nextInt() % 255);
+        color[4] = Color.rgb(rand.nextInt() % 255, rand.nextInt() % 255, rand.nextInt() % 255);
+        color[5] = Color.rgb(rand.nextInt() % 255, rand.nextInt() % 255, rand.nextInt() % 255);
+        sampleCircle = Math.abs(rand.nextInt() % 5);
 
         paint = new Paint();
         paint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -52,17 +53,10 @@ public class ColorLevel extends Level{
     public Bitmap getMainImage() {
         Bitmap bitmap = Bitmap.createBitmap(mainImage.getWidth(), mainImage.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
-
-        //x0=additionalImage.getWidth()/2;
-        //y0=additionalImage.getHeight()/2;
-        //paint.setColor(Color.rgb(199, 191, 230));
-        //canvas.drawCircle(x0, y0, radius+10, paint);
-
-
-        x0=mainImage.getWidth()/2;
-        y0=mainImage.getHeight()/2;
+        x0 = mainImage.getWidth() / 2;
+        y0 = mainImage.getHeight() / 2;
         paint.setColor(Color.RED);
-        paint.setColor(color[sampleCircle]);
+       // paint.setColor(color[sampleCircle]);
         canvas.drawCircle(x0, y0, radius, paint);
 
 
@@ -78,14 +72,12 @@ public class ColorLevel extends Level{
 
     @Override
     public Bitmap getAdditionalImage() {
-        Bitmap bitmap = Bitmap.createBitmap(additionalImage.getWidth(), additionalImage.getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(mainImage.getWidth(), mainImage.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
-
-        x0=additionalImage.getWidth()/2;
-        y0=additionalImage.getHeight()/2;
-        //paint.setColor(color[sampleCircle]);
+        x0 = mainImage.getWidth() / 2;
+        y0 = mainImage.getHeight() / 2;
         paint.setColor(Color.BLUE);
-        canvas.drawCircle(x0, y0, radius+30, paint);
+        canvas.drawCircle(x0, y0, radius, paint);
 
         return bitmap;
     }

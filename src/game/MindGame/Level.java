@@ -15,7 +15,6 @@ public abstract class Level {
     protected ImageView mainImage;//Основное изображение
 
     protected boolean haveAddittionalImage;//Показывает, есть ли дополнительное изображение
-    protected ImageView additionalImage;//Дополнительное изображение (пример/последовательность фигур)
     protected int additionalImageCount;
     protected int additionalTime; //Время показа дополнительного изображения в МИЛЛИСЕКУНДАХ
 

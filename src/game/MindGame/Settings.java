@@ -91,7 +91,7 @@ public class Settings implements Parcelable {
         //1 - DotLevel
         //2 - MathLevel
         //3 - FigureLevel
-        return new int[]{1};
+        return new int[]{3};
     }
 
     public Level getLevel(int number, ImageView imageView) {
@@ -99,13 +99,12 @@ public class Settings implements Parcelable {
             case 1:
                 return new DotLevel(imageView);
             case 2:
-                return new DotLevel(imageView);
+                return new MathLevel(imageView);
             case 3:
-                return new DotLevel(imageView);
+                return new ColorLevel(imageView);
             default:
                 return null;
         }
-
     }
 
     @Override
