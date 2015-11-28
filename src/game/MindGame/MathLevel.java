@@ -13,10 +13,6 @@ public class MathLevel extends Level {
         return null;
     }
 
-    @Override
-    public Bitmap getAdditionalImage() {
-        return null;
-    }
 
     public MathLevel(ImageView imageView)
     {

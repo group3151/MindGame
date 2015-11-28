@@ -14,11 +14,6 @@ public abstract class Level {
 
     protected ImageView mainImage;//Основное изображение
 
-    protected boolean haveAddittionalImage;//Показывает, есть ли дополнительное изображение
-    protected int additionalImageCount;
-    protected int additionalTime; //Время показа дополнительного изображения в МИЛЛИСЕКУНДАХ
-
-
     public abstract Bitmap getMainImage();
 
 
@@ -26,29 +21,9 @@ public abstract class Level {
         return questionsCount;
     }
 
-
-    public int getAdditionalTime() {
-        return additionalTime;
-    }
-
-
-    public boolean isHaveAddittionalImage() {
-        return haveAddittionalImage;
-    }
-
-
-    public int getAdditionalImageCount() {
-        return additionalImageCount;
-    }
-
-
-    public abstract Bitmap getAdditionalImage();
-
-
     public int getMark() {
         return mark;
     }
-
 
     public int getTime() {
         return time;
@@ -57,10 +32,7 @@ public abstract class Level {
 
     public Level(ImageView mainImage) {
         this.mainImage = mainImage;
-        haveAddittionalImage = false;
     }
 
-
     public abstract boolean TryClick(float x, float y);
-    // return x >= x0 && x <= x1 && y >= y0 && y <= y1;
 }
