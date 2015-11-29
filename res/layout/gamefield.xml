@@ -10,7 +10,7 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:gravity="center"
             android:layout_margin="5dp"
             android:layout_gravity="center_horizontal"
@@ -51,11 +51,6 @@
                 android:gravity="center"
                 android:id="@+id/scoreTextView"/>
     </LinearLayout>
-
-    <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="60dp"
-            android:id="@+id/additionalImage" android:visibility="gone"/>
 
     <ImageView
             android:id="@+id/image"

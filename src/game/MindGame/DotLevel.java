@@ -19,18 +19,23 @@ public class DotLevel extends Level {
         radius = 50;
         mark = 50;
         time = 2000;
-        count = 10;
-        haveAddittionalBitmap = false;
+        questionsCount = 10;
+        haveAddittionalImage = false;
     }
 
     @Override
-    public Bitmap Next() {
-        Bitmap bitmap = Bitmap.createBitmap(imageView.getWidth(), imageView.getHeight(), Bitmap.Config.ARGB_8888);
+    public boolean TryClick(float x, float y) {
+        return x >= x0 && x <= x1 && y >= y0 && y <= y1;
+    }
+
+    @Override
+    public Bitmap getMainImage() {
+        Bitmap bitmap = Bitmap.createBitmap(mainImage.getWidth(), mainImage.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
         Random rand = new Random(System.currentTimeMillis());
-        x0 = Math.abs(rand.nextInt()) % (imageView.getWidth() - 3 * radius) + radius;
-        y0 = Math.abs(rand.nextInt()) % (imageView.getHeight() - 3 * radius) + radius;
+        x0 = Math.abs(rand.nextInt()) % (mainImage.getWidth() - 3 * radius) + radius;
+        y0 = Math.abs(rand.nextInt()) % (mainImage.getHeight() - 3 * radius) + radius;
 
         Paint paint = new Paint();
         paint.setColor(Color.RED);
@@ -49,7 +54,7 @@ public class DotLevel extends Level {
     }
 
     @Override
-    public Bitmap getAdditionalBitmap() {
+    public Bitmap getAdditionalImage() {
         return null;
     }
 }
