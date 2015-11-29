@@ -138,10 +138,6 @@ public class MathLevel extends Level {
         canvas.drawText(task,mainImage.getWidth()*3/8, mainImage.getHeight()/8, paint);
     }
 
-    @Override
-    public Bitmap getAdditionalImage() {
-        return null;
-    }
 
     @Override
     public boolean TryClick(float x, float y) {
