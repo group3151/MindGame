@@ -25,16 +25,15 @@ public class ColorLevel extends Level {
         mark = 50;
         time = 3000;
         questionsCount = 10;
-        haveAddittionalImage = false;
 
         rand = new Random(System.currentTimeMillis());
         color = new int[6];
-        color[0] = Color.rgb(rand.nextInt()*rand.nextInt() % 255, rand.nextInt()*rand.nextInt() % 255, rand.nextInt()*rand.nextInt() % 255);
-        color[1] = Color.rgb(rand.nextInt()*rand.nextInt() % 255, rand.nextInt()*rand.nextInt() % 255, rand.nextInt()*rand.nextInt() % 255);
-        color[2] = Color.rgb(rand.nextInt()*rand.nextInt() % 255, rand.nextInt()*rand.nextInt() % 255, rand.nextInt()*rand.nextInt() % 255);
-        color[3] = Color.rgb(rand.nextInt()*rand.nextInt() % 255, rand.nextInt()*rand.nextInt() % 255, rand.nextInt()*rand.nextInt() % 255);
-        color[4] = Color.rgb(rand.nextInt()*rand.nextInt() % 255, rand.nextInt()*rand.nextInt() % 255, rand.nextInt()*rand.nextInt() % 255);
-        color[5] = Color.rgb(rand.nextInt()*rand.nextInt() % 255, rand.nextInt()*rand.nextInt() % 255, rand.nextInt()*rand.nextInt() % 255);
+        color[0] = Color.rgb(rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255);
+        color[1] = Color.rgb(rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255);
+        color[2] = Color.rgb(rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255);
+        color[3] = Color.rgb(rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255);
+        color[4] = Color.rgb(rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255);
+        color[5] = Color.rgb(rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255);
         sampleCircle = Math.abs(rand.nextInt() % 6);
 
         paint = new Paint();
@@ -51,11 +50,11 @@ public class ColorLevel extends Level {
     public Bitmap getMainImage() {
         Bitmap bitmap = Bitmap.createBitmap(mainImage.getWidth(), mainImage.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
-        int dx=100;
+        int dx = 100;
         int dy = 100;
 
-        x0 = mainImage.getWidth()/2;
-        y0 = mainImage.getHeight()/2 - dy;
+        x0 = mainImage.getWidth() / 2;
+        y0 = mainImage.getHeight() / 2 - dy;
 
 
         paint.setColor(color[sampleCircle]);
@@ -63,29 +62,29 @@ public class ColorLevel extends Level {
 
 
         paint.setColor(color[0]);
-        canvas.drawCircle(x0-dx, y0+dy, radius, paint);
+        canvas.drawCircle(x0 - dx, y0 + dy, radius, paint);
         paint.setColor(color[1]);
-        canvas.drawCircle(x0+dx, y0+dy, radius, paint);
+        canvas.drawCircle(x0 + dx, y0 + dy, radius, paint);
         paint.setColor(color[2]);
-        canvas.drawCircle(x0-dx, y0+dy*2, radius, paint);
+        canvas.drawCircle(x0 - dx, y0 + dy * 2, radius, paint);
         paint.setColor(color[3]);
-        canvas.drawCircle(x0+dx, y0+dy*2, radius, paint);
+        canvas.drawCircle(x0 + dx, y0 + dy * 2, radius, paint);
         paint.setColor(color[4]);
-        canvas.drawCircle(x0-dx, y0+dy*3, radius, paint);
+        canvas.drawCircle(x0 - dx, y0 + dy * 3, radius, paint);
         paint.setColor(color[5]);
-        canvas.drawCircle(x0+dx, y0+dy*3, radius, paint);
+        canvas.drawCircle(x0 + dx, y0 + dy * 3, radius, paint);
 
-        if(sampleCircle%2==0)
-            x0-=dx;
+        if (sampleCircle % 2 == 0)
+            x0 -= dx;
         else
-            x0+=dx;
-        if(sampleCircle>3)
-            y0+=dy*3;
-        else{
-            if(sampleCircle>1)
-                y0+=dy*2;
+            x0 += dx;
+        if (sampleCircle > 3)
+            y0 += dy * 3;
+        else {
+            if (sampleCircle > 1)
+                y0 += dy * 2;
             else
-                y0+=dy;
+                y0 += dy;
         }
 
         x1 = x0 + radius;
@@ -96,10 +95,5 @@ public class ColorLevel extends Level {
 
 
         return bitmap;
-    }
-
-    @Override
-    public Bitmap getAdditionalImage() {
-        return null;
     }
 }

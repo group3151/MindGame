@@ -25,7 +25,6 @@ public class MathLevel extends Level {
         mark = 100;
         time = 3000;
         questionsCount = 10;
-        haveAddittionalImage = false;
 
         task = new String();
         paint = new Paint();
