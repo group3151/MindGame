@@ -1,59 +1,71 @@
 package game.MindGame;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.content.Context;
 
-import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Map;
+import java.util.TreeMap;
 
-/**
- * Created by DVitinnik on 20-Oct-15.
- */
-public class Statistics implements Parcelable {
-    private static String fileName="";
-    private Dictionary<String, Integer> users=new Hashtable<String, Integer>();
 
-    public static final Creator<Statistics> CREATOR = new StatisticsCreator();
+public class Statistics {
 
-    public void addUser(String name, Integer score)
+    private static String fileName = "File.txt";
+    Context c;
+    private Map<Integer, String> users = new TreeMap<Integer, String>();
+
+    public Statistics(Context context)
     {
-        users.put(name, score);
+        this.c = context;
+        addUser("Paul", 213);
+        addUser("Dean", 11);
+        addUser("Sam", 413);
+        addUser("Jane", 113);
+        addUser("Bill", 813);
+        addUser("Carl", 5);
     }
 
-    public void clear()
-    {
-     //   users.
-    }
-
-    public void save()
-    {
-
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-
-    }
-
-
-
-    private static class StatisticsCreator implements Creator<Statistics>
-    {
-
-        @Override
-        public Statistics createFromParcel(Parcel parcel) {
-            return null;
+    public void addUser(String name, Integer score) {
+        users.put(score, name);
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(c.openFileInput(fileName)));
+            String str, str1;
+            int integer;
+            for (int i = 0; i <= 4; i++) {
+                if ((str = br.readLine()) != null) {
+                    integer = Integer.parseInt(str);
+                    if ((str1 = br.readLine()) != null)
+                        users.put(integer, str1);
+                } else break;
+            }
+            br.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        save();
+    }
 
-        @Override
-        public Statistics[] newArray(int i) {
-            return new Statistics[i];
+
+    public void save() {
+        try {
+            BufferedWriter br = new BufferedWriter(new OutputStreamWriter(c.openFileOutput(fileName, Context.MODE_PRIVATE)));
+            for (Map.Entry e : users.entrySet()) {
+                br.write(e.getKey() + "\n");
+                br.write(e.getValue() + "\n");
+            }
+            br.close();
+            users.clear();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
+
