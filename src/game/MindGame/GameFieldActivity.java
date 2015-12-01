@@ -27,20 +27,22 @@ import java.util.concurrent.TimeUnit;
  * Created by DVitinnik on 20-Oct-15.
  */
 public class GameFieldActivity extends Activity implements View.OnTouchListener {
-    private int[] levelViewList;
+    private int[] levelIndexList;
     private int levelIndex;
     private TimerAsync timerAsync;
-    private AdditionalTimerAsync additionalTimer;
     private Settings settings;
     private Level currentLevel = null;
     private StatusBar statusBar = new StatusBar();
 
     private ImageView imageView;
-    private ImageView additionalImage;
 
     TextView timeTextView;
-    TextView levelTextView;
+    TextView countTextView;
     TextView scoreTextView;
+
+    TextView timeLabelTextView;
+    TextView countLabelTextView;
+    TextView scoreLabelTextView;
 
     boolean gameOver;
 
@@ -57,59 +59,68 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
 
         Button startGameButton = (Button) findViewById(R.id.startButton);
         startGameButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 goToNextLevel();
                 startGameButton.setVisibility(View.GONE);
                 timerAsync = new TimerAsync();
+
                 timerAsync.execute(currentLevel.getTime());
+
                 timeTextView.setWidth(imageView.getWidth() / 3);
-                levelTextView.setWidth(imageView.getWidth() / 3);
+                countTextView.setWidth(imageView.getWidth() / 3);
                 scoreTextView.setWidth(imageView.getWidth() / 3);
+
                 updateStatusBar();
                 gameOver = false;
             }
         });
         settings = getIntent().getParcelableExtra("settings");
 
-        levelViewList = settings.getLevelNumbers();
+        levelIndexList = settings.getLevelNumbers();
         levelIndex = -1;
 
         imageView = (ImageView) findViewById(R.id.image);
         imageView.setOnTouchListener(this);
 
-        additionalImage = (ImageView) findViewById(R.id.additionalImage);
-
         timeTextView = (TextView) findViewById(R.id.timeTextView);
-        levelTextView = (TextView) findViewById(R.id.levelTextView);
+        countTextView = (TextView) findViewById(R.id.countTextView);
         scoreTextView = (TextView) findViewById(R.id.scoreTextView);
+
+        timeLabelTextView = (TextView) findViewById(R.id.timeLabelTextView);
+        countLabelTextView = (TextView) findViewById(R.id.countLabelTextView);
+        scoreLabelTextView = (TextView) findViewById(R.id.scoreLabelTextView);
     }
 
     private void updateStatusBar() {
+        timeLabelTextView.setWidth(timeTextView.getWidth());
+        countLabelTextView.setWidth(countTextView.getWidth());
+        scoreLabelTextView.setWidth(scoreTextView.getWidth());
 
-        timeTextView.setText("Время: " + String.valueOf(statusBar.getTime()));
-        levelTextView.setText("Количество: " + String.valueOf(statusBar.getCount()));
-        scoreTextView.setText("Счет: " + String.valueOf(statusBar.getScore()));
+        timeLabelTextView.setText("Время");
+        countLabelTextView.setText("Количество");
+        scoreLabelTextView.setText("Счет");
+
+        timeTextView.setText(String.valueOf(statusBar.getTime()));
+        countTextView.setText(String.valueOf(statusBar.getCount()));
+        scoreTextView.setText(String.valueOf(statusBar.getScore()));
     }
 
     private boolean goToNextLevel() {
-        if (levelIndex < levelViewList.length - 1) {
+        if (levelIndex < levelIndexList.length - 1) {
             levelIndex++;
-            currentLevel = settings.getLevel(levelViewList[levelIndex], imageView);
-            imageView.setImageBitmap(currentLevel.Next());
 
-            if (currentLevel.isHaveAddittionalBitmap())
-                additionalImage.setVisibility(View.VISIBLE);
-            else
-                additionalImage.setVisibility(View.GONE);
+            currentLevel = settings.getLevel(levelIndexList[levelIndex], imageView);
+            imageView.setImageBitmap(currentLevel.getMainImage());
 
             statusBar.setLevel(levelIndex + 1);
             statusBar.setTime(currentLevel.getTime());
-            statusBar.setCount(currentLevel.getCount());
+            statusBar.setCount(currentLevel.getQuestionsCount());
             updateStatusBar();
             return true;
         } else {
+            timerAsync.cancel(true);
+            gameOver = true;
             printText("YOU WIN");
         }
         return false;
@@ -118,22 +129,23 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        if (gameOver) return false;
+        if (gameOver) {
+            timerAsync.cancel(true);
+            return false;
+        }
+
         float x = motionEvent.getX();
         float y = motionEvent.getY();
+
         if (currentLevel != null && currentLevel.TryClick(x, y)) {
             statusBar.setCount(statusBar.getCount() - 1);
-
-            if (currentLevel.isHaveAddittionalBitmap()) {
-                additionalImage.setImageBitmap(currentLevel.getAdditionalBitmap());
-                if (currentLevel.getAdditionalTime() > 0) {
-                    //  additionalTimer = new AdditionalTimerAsync();
-                    // additionalTimer.execute(currentLevel.getAdditionalTime());
-                }
-            }
-            imageView.setImageBitmap(currentLevel.Next());
             statusBar.setScore(statusBar.getScore() + currentLevel.getMark());
-            timerAsync.cancel(false);
+            statusBar.setTime(currentLevel.getTime());
+
+            imageView.setImageBitmap(currentLevel.getMainImage());
+
+            if (timerAsync != null)
+                timerAsync.cancel(true);
             timerAsync = new TimerAsync();
             timerAsync.execute(currentLevel.getTime());
         } else
@@ -146,6 +158,18 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
         return true;
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        timerAsync.cancel(true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        timerAsync.cancel(true);
+    }
 
     private void printText(String text) {
         Bitmap bitmap = Bitmap.createBitmap(imageView.getWidth(), imageView.getHeight(), Bitmap.Config.ARGB_8888);
@@ -165,9 +189,10 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
 
     @Override
     protected void onStop() {
-        // timerAsync.cancel(false);
-        // additionalTimer.cancel(false);
+        super.onStop();
+        timerAsync.cancel(true);
     }
+
 
     class TimerAsync extends AsyncTask<Integer, Void, Void> {
         @Override
@@ -177,15 +202,13 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
 
         @Override
         protected Void doInBackground(Integer... values) {
-            while (values[0] > 0) {
-                if (!isCancelled()) {
-                    statusBar.setTime(--values[0]);
-                    publishProgress();
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(1);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+            while (values[0] > 0 && !isCancelled()) {
+                statusBar.setTime(--values[0]);
+                publishProgress();
+                try {
+                    TimeUnit.MILLISECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
             return null;
@@ -202,28 +225,6 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
             super.onPostExecute(aVoid);
             gameOver = true;
             printText("GAME OVER");
-        }
-    }
-
-    class AdditionalTimerAsync extends AsyncTask<Integer, Void, Void> {
-        @Override
-        protected Void doInBackground(Integer... values) {
-            while (values[0] > 0) {
-                if (!isCancelled()) {
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(1);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            additionalImage.setVisibility(View.GONE);
         }
     }
 }
