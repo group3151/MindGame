@@ -14,20 +14,42 @@ import java.util.TreeMap;
 
 
 public class Statistics {
+
     private static String fileName = "File.txt";
     Context c;
+    Activity activity;
     private Map<Integer, String> users = new TreeMap<Integer, String>();
 
-    public Statistics(Context context)
+    public void Test()
     {
-        this.c = context;
         addUser("Paul", 213);
         addUser("Yoda", 1413);
         addUser("Anna", 11);
-        addUser("Sam", 413);
+        addUser("Sam",  413);
         addUser("Pete", 113);
         addUser("Bill", 813);
         addUser("Carl", 5);
+    }
+
+    public  Statistics(Context context) {
+        this.c = context;
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+
+    public void deleteStatistics()
+    {
+        try {
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(c.openFileOutput(fileName, Context.MODE_PRIVATE)));
+            bw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        readStatistic();
     }
 
     public void addUser(String name, Integer score) {
@@ -53,7 +75,7 @@ public class Statistics {
     }
 
 
-    public void save() {
+    private void save() {
         try {
             BufferedWriter br = new BufferedWriter(new OutputStreamWriter(c.openFileOutput(fileName, Context.MODE_PRIVATE)));
             for (Map.Entry<Integer, String> e : users.entrySet()) {
@@ -69,7 +91,7 @@ public class Statistics {
         }
     }
 
-    public void readStatistic(Activity activity) {
+    public void readStatistic() {
         final int N = 10;
 
         TextView t  = (TextView) activity.findViewById(R.id.TextView0);
@@ -116,5 +138,4 @@ public class Statistics {
         }
     }
 }
-
 
