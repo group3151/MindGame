@@ -22,6 +22,7 @@ public class Statistics {
     {
         this.c = context;
         addUser("Paul", 213);
+        addUser("Yoda", 1413);
         addUser("Anna", 11);
         addUser("Sam", 413);
         addUser("Pete", 113);
@@ -30,14 +31,14 @@ public class Statistics {
     }
 
     public void addUser(String name, Integer score) {
-        users.put(score, name);
+        users.put(0-score, name);
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(c.openFileInput(fileName)));
             String str, str1;
             int integer;
             for (int i = 0; i <= 4; i++) {
                 if ((str = br.readLine()) != null) {
-                    integer = Integer.parseInt(str);
+                    integer = 0-Integer.parseInt(str);
                     if ((str1 = br.readLine()) != null)
                         users.put(integer, str1);
                 } else break;
@@ -55,8 +56,8 @@ public class Statistics {
     public void save() {
         try {
             BufferedWriter br = new BufferedWriter(new OutputStreamWriter(c.openFileOutput(fileName, Context.MODE_PRIVATE)));
-            for (Map.Entry e : users.entrySet()) {
-                br.write(e.getKey() + "\n");
+            for (Map.Entry<Integer, String> e : users.entrySet()) {
+                br.write(-e.getKey()   + "\n");
                 br.write(e.getValue() + "\n");
             }
             br.close();
