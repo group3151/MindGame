@@ -162,13 +162,15 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        timerAsync.cancel(true);
+        if (timerAsync != null)
+            timerAsync.cancel(true);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        timerAsync.cancel(true);
+        if (timerAsync != null)
+            timerAsync.cancel(true);
     }
 
     private void printText(String text) {
@@ -190,7 +192,8 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
     @Override
     protected void onStop() {
         super.onStop();
-        timerAsync.cancel(true);
+        if (timerAsync != null)
+            timerAsync.cancel(true);
     }
 
 

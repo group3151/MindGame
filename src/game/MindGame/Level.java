@@ -34,5 +34,7 @@ public abstract class Level {
         this.mainImage = mainImage;
     }
 
-    public abstract boolean TryClick(float x, float y);
+    public boolean TryClick(float x, float y) {
+        return x >= x0 && x <= x1 && y >= y0 && y <= y1;
+    }
 }

@@ -42,11 +42,6 @@ public class ColorLevel extends Level {
     }
 
     @Override
-    public boolean TryClick(float x, float y) {
-        return x >= x0 && x <= x1 && y >= y0 && y <= y1;
-    }
-
-    @Override
     public Bitmap getMainImage() {
         Bitmap bitmap = Bitmap.createBitmap(mainImage.getWidth(), mainImage.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
