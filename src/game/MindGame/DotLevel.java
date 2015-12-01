@@ -14,18 +14,11 @@ import java.util.Random;
 public class DotLevel extends Level {
     private int radius;
 
-    public DotLevel(ImageView imageView, ImageView additionalImage) {
-        super(imageView, additionalImage);
-        radius = 50;
+    public DotLevel(ImageView imageView) {
+        super(imageView);
         mark = 50;
         time = 2000;
         questionsCount = 10;
-        haveAddittionalImage = false;
-    }
-
-    @Override
-    public boolean TryClick(float x, float y) {
-        return x >= x0 && x <= x1 && y >= y0 && y <= y1;
     }
 
     @Override
@@ -33,9 +26,12 @@ public class DotLevel extends Level {
         Bitmap bitmap = Bitmap.createBitmap(mainImage.getWidth(), mainImage.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
+        radius = mainImage.getWidth() / 15;
+
         Random rand = new Random(System.currentTimeMillis());
         x0 = Math.abs(rand.nextInt()) % (mainImage.getWidth() - 3 * radius) + radius;
         y0 = Math.abs(rand.nextInt()) % (mainImage.getHeight() - 3 * radius) + radius;
+
 
         Paint paint = new Paint();
         paint.setColor(Color.RED);
@@ -51,10 +47,5 @@ public class DotLevel extends Level {
         y0 -= radius;
 
         return bitmap;
-    }
-
-    @Override
-    public Bitmap getAdditionalImage() {
-        return null;
     }
 }

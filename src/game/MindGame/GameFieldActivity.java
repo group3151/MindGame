@@ -35,11 +35,14 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
     private StatusBar statusBar = new StatusBar();
 
     private ImageView imageView;
-    private ImageView additionalImage;
 
     TextView timeTextView;
-    TextView levelTextView;
+    TextView countTextView;
     TextView scoreTextView;
+
+    TextView timeLabelTextView;
+    TextView countLabelTextView;
+    TextView scoreLabelTextView;
 
     boolean gameOver;
 
@@ -56,16 +59,18 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
 
         Button startGameButton = (Button) findViewById(R.id.startButton);
         startGameButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 goToNextLevel();
                 startGameButton.setVisibility(View.GONE);
                 timerAsync = new TimerAsync();
+
                 timerAsync.execute(currentLevel.getTime());
+
                 timeTextView.setWidth(imageView.getWidth() / 3);
-                levelTextView.setWidth(imageView.getWidth() / 3);
+                countTextView.setWidth(imageView.getWidth() / 3);
                 scoreTextView.setWidth(imageView.getWidth() / 3);
+
                 updateStatusBar();
                 gameOver = false;
             }
@@ -78,30 +83,35 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
         imageView = (ImageView) findViewById(R.id.image);
         imageView.setOnTouchListener(this);
 
-        additionalImage = (ImageView) findViewById(R.id.additionalImage);
-
         timeTextView = (TextView) findViewById(R.id.timeTextView);
-        levelTextView = (TextView) findViewById(R.id.levelTextView);
+        countTextView = (TextView) findViewById(R.id.countTextView);
         scoreTextView = (TextView) findViewById(R.id.scoreTextView);
+
+        timeLabelTextView = (TextView) findViewById(R.id.timeLabelTextView);
+        countLabelTextView = (TextView) findViewById(R.id.countLabelTextView);
+        scoreLabelTextView = (TextView) findViewById(R.id.scoreLabelTextView);
     }
 
     private void updateStatusBar() {
-        timeTextView.setText("Время: " + String.valueOf(statusBar.getTime()));
-        levelTextView.setText("Количество: " + String.valueOf(statusBar.getCount()));
-        scoreTextView.setText("Счет: " + String.valueOf(statusBar.getScore()));
+        timeLabelTextView.setWidth(timeTextView.getWidth());
+        countLabelTextView.setWidth(countTextView.getWidth());
+        scoreLabelTextView.setWidth(scoreTextView.getWidth());
+
+        timeLabelTextView.setText("Время");
+        countLabelTextView.setText("Количество");
+        scoreLabelTextView.setText("Счет");
+
+        timeTextView.setText(String.valueOf(statusBar.getTime()));
+        countTextView.setText(String.valueOf(statusBar.getCount()));
+        scoreTextView.setText(String.valueOf(statusBar.getScore()));
     }
 
     private boolean goToNextLevel() {
         if (levelIndex < levelIndexList.length - 1) {
             levelIndex++;
 
-            currentLevel = settings.getLevel(levelIndexList[levelIndex], imageView, additionalImage);
+            currentLevel = settings.getLevel(levelIndexList[levelIndex], imageView);
             imageView.setImageBitmap(currentLevel.getMainImage());
-
-            if (currentLevel.isHaveAddittionalImage())
-                additionalImage.setVisibility(View.VISIBLE);
-            else
-                additionalImage.setVisibility(View.GONE);
 
             statusBar.setLevel(levelIndex + 1);
             statusBar.setTime(currentLevel.getTime());
@@ -132,22 +142,10 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
             statusBar.setScore(statusBar.getScore() + currentLevel.getMark());
             statusBar.setTime(currentLevel.getTime());
 
-            if (currentLevel.isHaveAddittionalImage()) {
-                for (int i = 0; i < currentLevel.getAdditionalImageCount(); i++) {
-                    additionalImage.setImageBitmap(currentLevel.getAdditionalImage());
-                    if (currentLevel.getAdditionalTime() > 0) {
-                        try {
-                            Thread.sleep(currentLevel.getAdditionalTime());
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                additionalImage.setImageBitmap(null);
-            }
             imageView.setImageBitmap(currentLevel.getMainImage());
 
-            timerAsync.cancel(true);
+            if (timerAsync != null)
+                timerAsync.cancel(true);
             timerAsync = new TimerAsync();
             timerAsync.execute(currentLevel.getTime());
         } else
@@ -164,13 +162,15 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        timerAsync.cancel(true);
+        if (timerAsync != null)
+            timerAsync.cancel(true);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        timerAsync.cancel(true);
+        if (timerAsync != null)
+            timerAsync.cancel(true);
     }
 
     private void printText(String text) {
@@ -192,8 +192,10 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
     @Override
     protected void onStop() {
         super.onStop();
-        timerAsync.cancel(true);
+        if (timerAsync != null)
+            timerAsync.cancel(true);
     }
+
 
     class TimerAsync extends AsyncTask<Integer, Void, Void> {
         @Override
