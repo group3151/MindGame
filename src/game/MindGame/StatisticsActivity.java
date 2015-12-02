@@ -3,9 +3,11 @@ package game.MindGame;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 
 
 public class StatisticsActivity extends Activity {
@@ -21,6 +23,8 @@ public class StatisticsActivity extends Activity {
         statistics.setActivity(this);
         statistics.readStatistic();
         getActionBar().hide();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     public void deleteStatistic(View view) {
