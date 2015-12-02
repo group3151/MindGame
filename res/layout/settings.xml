@@ -4,4 +4,37 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent" android:background="@color/background">
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical"
+                  android:layout_width="match_parent" android:id="@+id/linearLayout" android:layout_height="486dp"
+                  android:background="@drawable/dots_level_background" android:weightSum="1"
+                  android:layout_gravity="center_horizontal">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:textColor="@android:color/white" android:textStyle="bold" android:textSize="20sp"
+                  android:gravity="center" android:layout_margin="5dp" android:layout_gravity="center_horizontal"
+                  android:text="Настройки"  />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:textColor="@android:color/white" android:textStyle="bold" android:textSize="20sp"
+                  android:gravity="center" android:layout_margin="10dp"
+                  android:text="Выберите сложность" />
+        <Switch
+                android:layout_width="172dp"
+                android:layout_height="wrap_content"
+                android:text="Легко"
+                android:id="@+id/switch1" android:layout_marginTop="50dp" android:layout_marginLeft="10dp"
+                android:checked="false"/>
+        <Spinner android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/spinner1"
+                 android:spinnerMode="dialog"/>
+        <Switch android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Средне"
+                android:id="@+id/switch2" android:layout_marginTop="10dp" android:layout_marginLeft="10dp"
+                android:checked="false"/>
+        <Spinner
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinner2" android:spinnerMode="dialog"/>
+        <Spinner android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/spinner3"
+                 android:spinnerMode="dialog"/>
+        <Switch android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Сложно"
+                android:id="@+id/switch3" android:layout_marginTop="10dp" android:layout_marginLeft="10dp"
+                android:checked="false"/>
+    </LinearLayout>
 </LinearLayout>
