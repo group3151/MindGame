@@ -181,7 +181,7 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
         int y = imageView.getHeight() / 2;
         Paint paint = new Paint();
         paint.setColor(Color.RED);
-        paint.setTextSize(150);
+        paint.setTextSize(70);
         paint.setStyle(Paint.Style.FILL_AND_STROKE);
         paint.setAntiAlias(true);
 

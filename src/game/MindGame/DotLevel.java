@@ -19,6 +19,7 @@ public class DotLevel extends Level {
         mark = 50;
         time = 2000;
         questionsCount = 10;
+        radius = 50;
     }
 
     @Override
@@ -26,7 +27,7 @@ public class DotLevel extends Level {
         Bitmap bitmap = Bitmap.createBitmap(mainImage.getWidth(), mainImage.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
-        radius = mainImage.getWidth() / 15;
+        // radius = mainImage.getWidth() / 15;
 
         Random rand = new Random(System.currentTimeMillis());
         x0 = Math.abs(rand.nextInt()) % (mainImage.getWidth() - 3 * radius) + radius;
