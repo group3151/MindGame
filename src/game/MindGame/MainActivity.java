@@ -10,7 +10,7 @@ import android.widget.Button;
 
 public class MainActivity extends Activity {
     Settings settings = new Settings();
-    Statistics statistics = new Statistics();
+    // Statistics statistics = new Statistics();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), StatisticsActivity.class);
-                intent.putExtra("statistics", statistics);
+                // intent.putExtra("statistics", statistics);
                 startActivity(intent);
             }
         });
