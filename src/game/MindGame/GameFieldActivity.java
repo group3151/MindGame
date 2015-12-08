@@ -50,9 +50,7 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActionBar().hide();
-        // чтобы приложение постоянно имело портретную ориентацию
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        //чтобы приложение было полноэкранным
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.gamefield);
@@ -121,7 +119,7 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
         } else {
             timerAsync.cancel(true);
             gameOver = true;
-            printText("YOU WIN");
+            printText("   YOU WIN");
         }
         return false;
     }

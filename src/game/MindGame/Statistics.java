@@ -3,6 +3,7 @@ package game.MindGame;
 import android.content.Context;
 import android.widget.TextView;
 import android.app.Activity;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -20,18 +21,17 @@ public class Statistics {
     Activity activity;
     private Map<Integer, String> users = new TreeMap<Integer, String>();
 
-    public void Test()
-    {
+    public void Test() {
         addUser("Paul", 213);
         addUser("Yoda", 1413);
         addUser("Anna", 11);
-        addUser("Sam",  413);
+        addUser("Sam", 413);
         addUser("Pete", 113);
         addUser("Bill", 813);
         addUser("Carl", 5);
     }
 
-    public  Statistics(Context context) {
+    public Statistics(Context context) {
         this.c = context;
     }
 
@@ -39,8 +39,7 @@ public class Statistics {
         this.activity = activity;
     }
 
-    public void deleteStatistics()
-    {
+    public void deleteStatistics() {
         try {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(c.openFileOutput(fileName, Context.MODE_PRIVATE)));
             bw.close();
@@ -53,14 +52,14 @@ public class Statistics {
     }
 
     public void addUser(String name, Integer score) {
-        users.put(0-score, name);
+        users.put(0 - score, name);
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(c.openFileInput(fileName)));
             String str, str1;
             int integer;
             for (int i = 0; i <= 4; i++) {
                 if ((str = br.readLine()) != null) {
-                    integer = 0-Integer.parseInt(str);
+                    integer = 0 - Integer.parseInt(str);
                     if ((str1 = br.readLine()) != null)
                         users.put(integer, str1);
                 } else break;
@@ -79,7 +78,7 @@ public class Statistics {
         try {
             BufferedWriter br = new BufferedWriter(new OutputStreamWriter(c.openFileOutput(fileName, Context.MODE_PRIVATE)));
             for (Map.Entry<Integer, String> e : users.entrySet()) {
-                br.write(-e.getKey()   + "\n");
+                br.write(-e.getKey() + "\n");
                 br.write(e.getValue() + "\n");
             }
             br.close();
@@ -94,7 +93,7 @@ public class Statistics {
     public void readStatistic() {
         final int N = 10;
 
-        TextView t  = (TextView) activity.findViewById(R.id.TextView0);
+        TextView t = (TextView) activity.findViewById(R.id.TextView0);
         TextView t1 = (TextView) activity.findViewById(R.id.TextView1);
         TextView t2 = (TextView) activity.findViewById(R.id.TextView2);
         TextView t3 = (TextView) activity.findViewById(R.id.TextView3);
@@ -106,8 +105,16 @@ public class Statistics {
         TextView t9 = (TextView) activity.findViewById(R.id.TextView9);
 
         Object[] arr = new Object[N];
-        arr[0] = t;        arr[1] = t1;        arr[2] = t2;        arr[3] = t3;        arr[4] = t4;
-        arr[5] = t5;       arr[6] = t6;        arr[7] = t7;        arr[8] = t8;        arr[9] = t9;
+        arr[0] = t;
+        arr[1] = t1;
+        arr[2] = t2;
+        arr[3] = t3;
+        arr[4] = t4;
+        arr[5] = t5;
+        arr[6] = t6;
+        arr[7] = t7;
+        arr[8] = t8;
+        arr[9] = t9;
 
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(c.openFileInput(fileName)));

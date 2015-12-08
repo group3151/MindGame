@@ -88,11 +88,11 @@ public class MathLevel extends Level {
         points[1][0] = points[4][0] = points[7][0] = (5 * w) / 6;
         points[2][0] = points[5][0] = w / 2;
 
-        points[0][1] = points[1][1] = h / 4 + 15;
+        points[0][1] = points[1][1] = h / 4;
         points[2][1] = (5 * h) / 12 + 15;
-        points[3][1] = points[4][1] = (7 * h) / 12 + 15;
-        points[5][1] = (3 * h) / 4 + 15;
-        points[6][1] = points[7][1] = (11 * h) / 12 + 15;
+        points[3][1] = points[4][1] = (7 * h) / 12;
+        points[5][1] = (3 * h) / 4;
+        points[6][1] = points[7][1] = (11 * h) / 12;
     }
 
     private int Exercise(int k, Random random) {

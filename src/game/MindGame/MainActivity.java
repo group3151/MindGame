@@ -18,9 +18,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main);
         getActionBar().hide();
 
-        // чтобы приложение постоянно имело портретную ориентацию
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        //чтобы приложение было полноэкранным
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         Button playButton = (Button) findViewById(R.id.playButton);
