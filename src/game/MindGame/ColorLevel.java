@@ -25,20 +25,6 @@ public class ColorLevel extends Level {
         mark = 50;
         time = 3000;
         questionsCount = 10;
-
-        rand = new Random(System.currentTimeMillis());
-        color = new int[6];
-        color[0] = Color.rgb(rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255);
-        color[1] = Color.rgb(rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255);
-        color[2] = Color.rgb(rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255);
-        color[3] = Color.rgb(rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255);
-        color[4] = Color.rgb(rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255);
-        color[5] = Color.rgb(rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255, rand.nextInt() * rand.nextInt() % 255);
-        sampleCircle = Math.abs(rand.nextInt() % 6);
-
-        paint = new Paint();
-        paint.setStyle(Paint.Style.FILL_AND_STROKE);
-        paint.setAntiAlias(true);
     }
 
     @Override
@@ -51,10 +37,21 @@ public class ColorLevel extends Level {
         x0 = mainImage.getWidth() / 2;
         y0 = mainImage.getHeight() / 2 - dy;
 
+        rand = new Random(System.currentTimeMillis());
+        color = new int[6];
+        color[0] = Color.rgb(rand.nextInt() % 255, rand.nextInt() % 255, rand.nextInt() / 6 % 255);
+        color[1] = Color.rgb(rand.nextInt() / 2 % 255, rand.nextInt() % 255, rand.nextInt() / 5 % 255);
+        color[2] = Color.rgb(rand.nextInt() / 3 % 255, rand.nextInt() % 255, rand.nextInt() / 4 % 255);
+        color[3] = Color.rgb(rand.nextInt() / 4 % 255, rand.nextInt() % 255, rand.nextInt() / 3 % 255);
+        color[4] = Color.rgb(rand.nextInt() / 5 % 255, rand.nextInt() % 255, rand.nextInt() / 2 % 255);
+        color[5] = Color.rgb(rand.nextInt() / 6 % 255, rand.nextInt() % 255, rand.nextInt() % 255);
+        sampleCircle = Math.abs(rand.nextInt() % 6);
 
+        paint = new Paint();
+        paint.setStyle(Paint.Style.FILL_AND_STROKE);
+        paint.setAntiAlias(true);
         paint.setColor(color[sampleCircle]);
         canvas.drawCircle(x0, y0, radius, paint);
-
 
         paint.setColor(color[0]);
         canvas.drawCircle(x0 - dx, y0 + dy, radius, paint);
