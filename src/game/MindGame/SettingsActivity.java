@@ -3,9 +3,11 @@ package game.MindGame;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Switch;
@@ -27,8 +29,10 @@ public class SettingsActivity extends Activity {
         setContentView(R.layout.settings);
         mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         getActionBar().hide();
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
+
     @Override
     protected void onPause() {
         super.onPause();

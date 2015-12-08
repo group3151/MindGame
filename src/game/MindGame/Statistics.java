@@ -3,6 +3,7 @@ package game.MindGame;
 import android.content.Context;
 import android.os.Parcelable;
 import android.os.Parcel;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -15,24 +16,23 @@ import java.util.TreeMap;
 
 public class Statistics implements Parcelable {
     String fileName = "File.txt";
-    TreeMap<Integer, String> users=new TreeMap<Integer, String>();
+    TreeMap<Integer, String> users = new TreeMap<Integer, String>();
     Context c;
 
-   public Statistics(Parcel in){
-       String s1 = in.readString();
-       int a = in.readInt();
-       String s = in.readString();
-       this.users.put(a,s);
-       this.fileName = s1;
-
+    public Statistics(Parcel in) {
+        String s1 = in.readString();
+        int a = in.readInt();
+        String s = in.readString();
+        this.users.put(a, s);
+        this.fileName = s1;
     }
 
-    public void setContext(Context context){
-        this.c=context;
+    public void setContext(Context context) {
+        this.c = context;
     }
 
-    public Statistics(Context context){
-        this.c=context;
+    public Statistics(Context context) {
+        this.c = context;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class Statistics implements Parcelable {
     }
 
 
-    public TreeMap getStatistics(){
+    public TreeMap getStatistics() {
         users.clear();
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(c.openFileInput("File.txt")));
@@ -52,7 +52,7 @@ public class Statistics implements Parcelable {
                     integer = -Integer.parseInt(str);
                     if ((str1 = br.readLine()) != null)
                         users.put(integer, str1);
-                }else break;
+                } else break;
             }
             br.close();
         } catch (FileNotFoundException e) {
@@ -75,7 +75,7 @@ public class Statistics implements Parcelable {
                     integer = Integer.parseInt(str);
                     if ((str1 = br.readLine()) != null)
                         users.put(-integer, str1);
-                }else break;
+                } else break;
             }
             br.close();
         } catch (FileNotFoundException e) {
@@ -91,7 +91,7 @@ public class Statistics implements Parcelable {
         try {
             BufferedWriter br = new BufferedWriter(new OutputStreamWriter(c.openFileOutput(fileName, Context.MODE_PRIVATE)));
             for (Map.Entry<Integer, String> e : users.entrySet()) {
-                br.write(-e.getKey()   + "\n");
+                br.write(-e.getKey() + "\n");
                 br.write(e.getValue() + "\n");
             }
             br.close();
@@ -113,10 +113,10 @@ public class Statistics implements Parcelable {
         }
     }
 
-   @Override
+    @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(fileName);
-        for(Map.Entry<Integer,String> e : users.entrySet()) {
+        for (Map.Entry<Integer, String> e : users.entrySet()) {
             parcel.writeInt(e.getKey());
             parcel.writeString(e.getValue());
         }
@@ -124,8 +124,8 @@ public class Statistics implements Parcelable {
 
 
     public static final Creator<Statistics> CREATOR = new StatisticsCreator();
-    private static class StatisticsCreator implements Creator<Statistics>
-    {
+
+    private static class StatisticsCreator implements Creator<Statistics> {
 
         @Override
         public Statistics createFromParcel(Parcel parcel) {

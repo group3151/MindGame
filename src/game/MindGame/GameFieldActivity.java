@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -33,6 +34,7 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
     private Settings settings;
     private Level currentLevel = null;
     private StatusBar statusBar = new StatusBar();
+    private Statistics statistics;
 
     private ImageView imageView;
 
@@ -73,7 +75,11 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
                 gameOver = false;
             }
         });
-        settings = getIntent().getParcelableExtra("settings");
+        Intent intent = getIntent();
+        Parcelable[] parcelables = intent.getParcelableArrayExtra("value");
+        statistics = (Statistics) parcelables[1];
+        statistics.setContext(this);
+        settings = (Settings) parcelables[0];
 
         levelIndexList = settings.getLevelNumbers();
         levelIndex = -1;
@@ -120,6 +126,7 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
             timerAsync.cancel(true);
             gameOver = true;
             printText("   YOU WIN");
+            statistics.addUser(String.format("User %d", statistics.getStatistics().size() + 1), statusBar.getScore());
         }
         return false;
     }
@@ -226,6 +233,7 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
             super.onPostExecute(aVoid);
             gameOver = true;
             printText("GAME OVER");
+            statistics.addUser(String.format("User %d", statistics.getStatistics().size() + 1), statusBar.getScore());
         }
     }
 }
