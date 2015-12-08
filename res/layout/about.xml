@@ -36,7 +36,7 @@
     <TextView
             android:layout_width="229dp"
             android:layout_height="wrap_content"
-            android:text="D.Vitinik      V.Glimbovskiy          I.Dyachenko   M.Modestov  Y.Nedilko            K.Frolov   "
+            android:text="D.Vitinnik      V.Glimbovskiy          I.Dyachenko   M.Modestov  Y.Nedilko            K.Frolov   "
             android:id="@+id/textView5"
             android:textStyle="italic" android:textColor="#E0E0E0" android:textSize="25dp"
             android:layout_gravity="center|right" android:layout_weight="0.22"/>
