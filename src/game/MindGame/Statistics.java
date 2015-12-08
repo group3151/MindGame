@@ -1,9 +1,8 @@
 package game.MindGame;
 
 import android.content.Context;
-import android.widget.TextView;
-import android.app.Activity;
-
+import android.os.Parcelable;
+import android.os.Parcel;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -14,55 +13,69 @@ import java.util.Map;
 import java.util.TreeMap;
 
 
-public class Statistics {
-
-    private static String fileName = "File.txt";
+public class Statistics implements Parcelable {
+    String fileName = "File.txt";
+    TreeMap<Integer, String> users=new TreeMap<Integer, String>();
     Context c;
-    Activity activity;
-    private Map<Integer, String> users = new TreeMap<Integer, String>();
 
-    public void Test() {
-        addUser("Paul", 213);
-        addUser("Yoda", 1413);
-        addUser("Anna", 11);
-        addUser("Sam", 413);
-        addUser("Pete", 113);
-        addUser("Bill", 813);
-        addUser("Carl", 5);
+   public Statistics(Parcel in){
+       String s1 = in.readString();
+       int a = in.readInt();
+       String s = in.readString();
+       this.users.put(a,s);
+       this.fileName = s1;
+
     }
 
-    public Statistics(Context context) {
-        this.c = context;
+    public void setContext(Context context){
+        this.c=context;
     }
 
-    public void setActivity(Activity activity) {
-        this.activity = activity;
+    public Statistics(Context context){
+        this.c=context;
     }
 
-    public void deleteStatistics() {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+
+    public TreeMap getStatistics(){
+        users.clear();
         try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(c.openFileOutput(fileName, Context.MODE_PRIVATE)));
-            bw.close();
+            BufferedReader br = new BufferedReader(new InputStreamReader(c.openFileInput("File.txt")));
+            String str, str1;
+            int integer;
+            for (int i = 0; i <= 4; i++) {
+                if ((str = br.readLine()) != null) {
+                    integer = -Integer.parseInt(str);
+                    if ((str1 = br.readLine()) != null)
+                        users.put(integer, str1);
+                }else break;
+            }
+            br.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        readStatistic();
+        return users;
     }
 
+
     public void addUser(String name, Integer score) {
-        users.put(0 - score, name);
+        users.put(-score, name);
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(c.openFileInput(fileName)));
             String str, str1;
             int integer;
             for (int i = 0; i <= 4; i++) {
                 if ((str = br.readLine()) != null) {
-                    integer = 0 - Integer.parseInt(str);
+                    integer = Integer.parseInt(str);
                     if ((str1 = br.readLine()) != null)
-                        users.put(integer, str1);
-                } else break;
+                        users.put(-integer, str1);
+                }else break;
             }
             br.close();
         } catch (FileNotFoundException e) {
@@ -78,11 +91,10 @@ public class Statistics {
         try {
             BufferedWriter br = new BufferedWriter(new OutputStreamWriter(c.openFileOutput(fileName, Context.MODE_PRIVATE)));
             for (Map.Entry<Integer, String> e : users.entrySet()) {
-                br.write(-e.getKey() + "\n");
+                br.write(-e.getKey()   + "\n");
                 br.write(e.getValue() + "\n");
             }
             br.close();
-            users.clear();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -90,58 +102,39 @@ public class Statistics {
         }
     }
 
-    public void readStatistic() {
-        final int N = 10;
-
-        TextView t = (TextView) activity.findViewById(R.id.TextView0);
-        TextView t1 = (TextView) activity.findViewById(R.id.TextView1);
-        TextView t2 = (TextView) activity.findViewById(R.id.TextView2);
-        TextView t3 = (TextView) activity.findViewById(R.id.TextView3);
-        TextView t4 = (TextView) activity.findViewById(R.id.TextView4);
-        TextView t5 = (TextView) activity.findViewById(R.id.TextView5);
-        TextView t6 = (TextView) activity.findViewById(R.id.TextView6);
-        TextView t7 = (TextView) activity.findViewById(R.id.TextView7);
-        TextView t8 = (TextView) activity.findViewById(R.id.TextView8);
-        TextView t9 = (TextView) activity.findViewById(R.id.TextView9);
-
-        Object[] arr = new Object[N];
-        arr[0] = t;
-        arr[1] = t1;
-        arr[2] = t2;
-        arr[3] = t3;
-        arr[4] = t4;
-        arr[5] = t5;
-        arr[6] = t6;
-        arr[7] = t7;
-        arr[8] = t8;
-        arr[9] = t9;
-
+    public void deleteStatistic() {
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(c.openFileInput(fileName)));
-            String str, str1;
-            for (int i = 0; i <= N - 1; i += 2) {
-                if ((str = br.readLine()) != null) {
-                    for (int k = 5 - str.length() - 1; k >= 0; k--)
-                        str = "0" + str;
-                    TextView text = (TextView) arr[i + 1];
-                    text.setText(str);
-                } else {
-                    TextView text = (TextView) arr[i + 1];
-                    text.setText("");
-                }
-                if ((str1 = br.readLine()) != null) {
-
-                    TextView text1 = (TextView) arr[i];
-                    text1.setText(str1);
-                } else {
-                    TextView text1 = (TextView) arr[i];
-                    text1.setText("");
-                }
-            }
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(c.openFileOutput(fileName, Context.MODE_PRIVATE)));
+            bw.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+   @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(fileName);
+        for(Map.Entry<Integer,String> e : users.entrySet()) {
+            parcel.writeInt(e.getKey());
+            parcel.writeString(e.getValue());
+        }
+    }
+
+
+    public static final Creator<Statistics> CREATOR = new StatisticsCreator();
+    private static class StatisticsCreator implements Creator<Statistics>
+    {
+
+        @Override
+        public Statistics createFromParcel(Parcel parcel) {
+            return new Statistics(parcel);
+        }
+
+        @Override
+        public Statistics[] newArray(int i) {
+            return new Statistics[i];
         }
     }
 }
