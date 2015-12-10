@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -33,6 +34,7 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
     private Settings settings;
     private Level currentLevel = null;
     private StatusBar statusBar = new StatusBar();
+    private Statistics statistics;
 
     private ImageView imageView;
 
@@ -50,9 +52,7 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActionBar().hide();
-        // чтобы приложение постоянно имело портретную ориентацию
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        //чтобы приложение было полноэкранным
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.gamefield);
@@ -75,7 +75,11 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
                 gameOver = false;
             }
         });
-        settings = getIntent().getParcelableExtra("settings");
+        Intent intent = getIntent();
+        Parcelable[] parcelables = intent.getParcelableArrayExtra("value");
+        statistics = (Statistics) parcelables[1];
+        statistics.setContext(this);
+        settings = (Settings) parcelables[0];
 
         levelIndexList = settings.getLevelNumbers();
         levelIndex = -1;
@@ -121,7 +125,8 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
         } else {
             timerAsync.cancel(true);
             gameOver = true;
-            printText("YOU WIN");
+            printText("   YOU WIN");
+            statistics.addUser(String.format("User %d", statistics.getStatistics().size() + 1), statusBar.getScore());
         }
         return false;
     }
@@ -181,7 +186,7 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
         int y = imageView.getHeight() / 2;
         Paint paint = new Paint();
         paint.setColor(Color.RED);
-        paint.setTextSize(150);
+        paint.setTextSize(70);
         paint.setStyle(Paint.Style.FILL_AND_STROKE);
         paint.setAntiAlias(true);
 
@@ -228,6 +233,7 @@ public class GameFieldActivity extends Activity implements View.OnTouchListener 
             super.onPostExecute(aVoid);
             gameOver = true;
             printText("GAME OVER");
+            statistics.addUser(String.format("User %d", statistics.getStatistics().size() + 1), statusBar.getScore());
         }
     }
 }
